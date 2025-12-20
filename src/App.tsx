@@ -1,22 +1,26 @@
+import React, { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
-import Home from "./pages/Home";
-import Podcast from "./pages/Podcast";
-import Episode from "./pages/Episode";
-import LagrangeMap from "./pages/LagrangeMap";
-import Chapters from "./pages/Chapters";
-import ChapterDetail from "./pages/ChapterDetail";
-import Laboratory from "./pages/Laboratory";
-import Auth from "./pages/Auth";
-import NotFound from "./pages/NotFound";
+
+const Home = lazy(() => import("./pages/Home"));
+const Podcast = lazy(() => import("./pages/Podcast"));
+const Episode = lazy(() => import("./pages/Episode"));
+const LagrangeMap = lazy(() => import("./pages/LagrangeMap"));
+const Chapters = lazy(() => import("./pages/Chapters"));
+const ChapterDetail = lazy(() => import("./pages/ChapterDetail"));
+const Laboratory = lazy(() => import("./pages/Laboratory"));
+const Auth = lazy(() => import("./pages/Auth"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
 const basename = import.meta.env.BASE_URL === '/' ? undefined : import.meta.env.BASE_URL;
+
+const LoadingFallback = () => <div aria-busy="true">Cargando…</div>;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -25,17 +29,19 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter basename={basename}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/podcast" element={<Podcast />} />
-            <Route path="/podcast/:slug" element={<Episode />} />
-            <Route path="/mapa-lagrange" element={<LagrangeMap />} />
-            <Route path="/capitulos" element={<Chapters />} />
-            <Route path="/capitulos/:slug" element={<ChapterDetail />} />
-            <Route path="/laboratorio" element={<Laboratory />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/podcast" element={<Podcast />} />
+              <Route path="/podcast/:slug" element={<Episode />} />
+              <Route path="/mapa-lagrange" element={<LagrangeMap />} />
+              <Route path="/capitulos" element={<Chapters />} />
+              <Route path="/capitulos/:slug" element={<ChapterDetail />} />
+              <Route path="/laboratorio" element={<Laboratory />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

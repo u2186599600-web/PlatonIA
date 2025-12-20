@@ -1,5 +1,5 @@
 {
-  "homepage": "https://as6173268.github.io/constellation-chronicle/",
+  "homepage": "https://u2186599600-web.github.io/PlatonIA/",
   "name": "vite_react_shadcn_ts",
   "private": true,
   "version": "0.0.0",
@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "sync-episodes": "node sync-episodes.cjs",
+    "analyze": "ANALYZE=true npm run build && echo 'Report: dist/stats.html'",
     "deploy": "npm install --global gh-pages && npm run build && gh-pages -d dist"
   },
   "dependencies": {
@@ -87,6 +88,7 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
-    "vite": "^5.4.19"
+    "vite": "^5.4.19",
+    "rollup-plugin-visualizer": "^5.10.0"
   }
 }
